@@ -6,7 +6,9 @@
 brew install stow
 ```
 
-然后建立以下目录, nvim 的所有配置在 `.dotfiles/envim/.config/nvim` 目录下:
+然后把本 git 仓库 `git clone` 到 `.dotfiles` 目录，获得以下目录结构。
+
+其中，nvim 的所有配置在 `.dotfiles/envim/.config/nvim` 目录下:
 
 ```shell
 .dotfiles
