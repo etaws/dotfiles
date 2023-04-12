@@ -1,0 +1,87 @@
+# 自动刷新
+live_config_reload: true
+
+selection:
+  semantic_escape_chars: ",│`|:\"' ()[]{}<>\t"
+  save_to_clipboard: true
+
+# Tab 缩进
+tabspaces: 4
+# 背景透明度
+window.opacity: 0.9
+
+shell:
+  program: /bin/zsh
+  args:
+    # login
+    - -l
+
+window:
+  option_as_alt: Both
+  # 窗口大小
+  #  dimensions:
+  #    columns: 120
+  #    lines: 60
+
+  # 边缘空白
+  padding:
+    x: 10
+    y: 15
+  dynamic_padding: false
+  # startup_mode: SimpleFullscreen
+  startup_mode: Maximized 
+  # 窗口修饰
+  # - full: 有边界 + 标题栏
+  # - none: 无边界 + 标题栏
+  decorations: full 
+
+scrolling:
+  # 历史保留行数
+  history: 2000
+
+  # 每次滚动行数
+  multiplier: 20
+
+  # 每次滚动行数（分屏时）
+  faux_multiplier: 100
+
+  # 自动滚动至最新行
+  auto_scroll: true
+
+font:
+  size: 12
+  # 字体
+  normal:
+    family: 'FiraCode Nerd Font Mono'
+    style: Regular
+  bold:
+    family: 'FiraCode Nerd Font Mono'
+    style: Bold
+  italic:
+    family: 'FiraCode Nerd Font Mono'
+    style: Italic
+  bold_{i}talic:
+    family: 'FiraCode Nerd Font Mono'
+    style: Bold Italic
+
+  # 细描边
+  AppleFontSmothing: true
+
+mouse:
+  hide_when_typing: true
+
+key_bindings:
+
+  - { key: N, mods: Command, chars: "\x10\x6e\x0a" }
+
+  # tab
+  - { key: H, mods: Command, action: None }
+  - { key: H, mods: Command, action: ReceiveChar }
+  - { key: H, mods: Command, chars: "\x14\x68\x0a" }
+  - { key: M, mods: Command, chars: "\x14\x6e\x0a" }
+  - { key: L, mods: Command, chars: "\x14\x6c\x0a" }
+
+  # pane
+  - { key: T, mods: Command, chars: "\x10\x6e\x0a" }
+  - { key: Left, mods: Command, chars: "\x10\x68\x0a" }
+  - { key: Right, mods: Command, chars: "\x10\x6c\x0a" }
