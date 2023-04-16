@@ -38,3 +38,10 @@ require("lazy").setup({
   },
 })
 vim.keymap.set("n", "<leader>L", "<cmd>:Lazy<cr>", { desc = "Plugin Manager" })
+
+vim.api.nvim_create_autocmd("User", {
+  pattern = "VeryLazy",
+  callback = function()
+    require("autocmds")
+  end,
+})

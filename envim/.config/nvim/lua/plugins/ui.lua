@@ -6,6 +6,7 @@ return {
   { "nvim-tree/nvim-web-devicons", lazy = true },
   {
     "ethanholz/nvim-lastplace",
+    enabled = false,
     lazy = false,
     config = function()
       require("nvim-lastplace").setup({
