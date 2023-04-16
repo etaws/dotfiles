@@ -43,11 +43,33 @@ return {
       })
 
       local Terminal = require("toggleterm.terminal").Terminal
+
       local node = Terminal:new({ cmd = "node", hidden = true })
 
       function _NODE_TOGGLE()
         node:toggle()
       end
+
+      local htop = Terminal:new({
+        cmd = "htop",
+        dir = "git_dir",
+        direction = "vertical",
+        float_opts = {
+          border = "double",
+        },
+      })
+
+      function _HTOP_TOGGLE()
+        htop:toggle()
+      end
+
+      vim.api.nvim_set_keymap("n", "<leader>ht", "<cmd>lua _HTOP_TOGGLE()<CR>", { noremap = true, silent = true })
+      vim.api.nvim_set_keymap(
+        "n",
+        "<leader>cg",
+        '<cmd>TermExec cmd="cargo test" size=20 dir=git_dir direction=horizontal<CR>',
+        { noremap = true, silent = true }
+      )
     end,
   },
 }
