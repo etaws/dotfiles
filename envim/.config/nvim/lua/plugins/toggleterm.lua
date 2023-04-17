@@ -67,7 +67,7 @@ return {
       vim.api.nvim_set_keymap(
         "n",
         "<leader>cg",
-        '<cmd>TermExec cmd="cargo test" size=20 dir=git_dir direction=horizontal<CR>',
+        '<cmd>TermExec cmd="cargo test" size=10 dir=git_dir direction=horizontal<CR>',
         { noremap = true, silent = true }
       )
     end,
