@@ -5,7 +5,7 @@ return {
     config = function()
       require("styler").setup({
         themes = {
-          markdown = { colorscheme = "catppuccin-mocha" },
+          --  markdown = { colorscheme = "catppuccin-mocha" },
           help = { colorscheme = "gruvbox" },
         },
       })
