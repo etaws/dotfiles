@@ -78,6 +78,13 @@ return {
         capabilities = capabilities,
         on_attach = on_attach,
         flags = { debounce_text_changes = 150 },
+        settings = {
+          ["rust-analyzer"] = {
+            checkOnSave = {
+              command = "clippy",
+            },
+          },
+        },
       })
     end,
   },
