@@ -153,6 +153,7 @@ return {
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
       "hrsh7th/cmp-vsnip",
+      "dcampos/nvim-snippy",
     },
     config = function()
       vim.o.completeopt = "menuone,noinsert,noselect"
@@ -161,7 +162,8 @@ return {
         -- Enable LSP snippets
         snippet = {
           expand = function(args)
-            vim.fn["vsnip#anonymous"](args.body)
+            require("snippy").expand_snippet(args.body)
+            -- vim.fn["vsnip#anonymous"](args.body)
           end,
         },
         mapping = {
@@ -172,7 +174,7 @@ return {
           ["<Tab>"] = cmp.mapping.select_next_item(),
           ["<C-d>"] = cmp.mapping.scroll_docs(-4),
           ["<C-f>"] = cmp.mapping.scroll_docs(4),
-          ["<C-Space>"] = cmp.mapping.complete(),
+          ["<C-s>"] = cmp.mapping.complete(),
           ["<C-e>"] = cmp.mapping.close(),
           ["<CR>"] = cmp.mapping.confirm({
             behavior = cmp.ConfirmBehavior.Insert,
@@ -183,7 +185,8 @@ return {
         -- Installed sources
         sources = {
           { name = "nvim_lsp" },
-          { name = "vsnip" },
+          { name = "snippy" },
+          -- { name = "vsnip" },
           { name = "path" },
           { name = "buffer" },
         },
