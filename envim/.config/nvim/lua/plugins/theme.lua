@@ -28,4 +28,5 @@ return {
   { "tjdevries/colorbuddy.vim", event = "VeryLazy" },
   { "Th3Whit3Wolf/onebuddy", event = "VeryLazy" },
   { "mhartington/oceanic-next", event = "VeryLazy" },
+  { "hardhackerlabs/theme-vim", enabled = true , event = "VeryLazy" },
 }

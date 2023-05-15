@@ -3,7 +3,7 @@ return {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
     opts = {
-      ensure_installed = { "rust", "c", "vim", "lua", "markdown", "markdown_inline", "kdl" },
+      ensure_installed = { "rust", "c", "vim", "lua", "markdown", "markdown_inline", "python" },
       -- 启用代码高亮功能
       highlight = {
         enable = true,
