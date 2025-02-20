@@ -12,8 +12,8 @@ local opt = {
 
 local pluginKeys = {}
 
-map("n", "<leader>gf", "<cmd>Neoformat<CR>", opt)
-map("n", "<leader>hh", "<cmd>SymbolsOutline<CR>", opt)
+-- map("n", "<leader>gf", "<cmd>Neoformat<CR>", opt)
+-- map("n", "<leader>hh", "<cmd>SymbolsOutline<CR>", opt)
 
 map("n", "<C-l>", ":ls<CR>:b<Space>", opt)
 map("n", "<C-k>", ":bd<CR>", opt)

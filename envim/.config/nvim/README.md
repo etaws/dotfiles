@@ -4,9 +4,8 @@ Neovim 配置文件（for Mac OS and Linux）
 
 ## 需要安装的软件
 
-* [glow](https://github.com/charmbracelet/glow)
-* [nnn](https://github.com/jarun/nnn)
-* [markdownlint-cli](https://github.com/igorshubovych/markdownlint-cli)
+* luajit
+* install luarocks
 * [stylua](https://github.com/JohnnyMorganz/StyLua)
 * ripgrep
 * fd
@@ -19,9 +18,8 @@ Neovim 配置文件（for Mac OS and Linux）
 给出一些安装命令的例子（以 Mac OS 为例；在 Linux 下安装对应的版本就行了）：
 
 ```shell
-brew install glow
-brew install nnn
-npm install -g markdownlint-cli
+brew install luajit
+brew install luarocks
 brew install ripgrep
 brew install gnu-sed
 brew install exiftool

@@ -1,3 +1,5 @@
+vim.g.have_nerd_font = true
+
 -- utf8
 vim.g.encoding = "UTF-8"
 vim.o.fileencoding = "utf-8"
