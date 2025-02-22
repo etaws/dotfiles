@@ -8,19 +8,19 @@ return {
       require("render-markdown").setup({
           enabled = false,
           anti_conceal = { enabled = false },
-          sign = { enabled = false },
+ --         sign = { enabled = false },
           file_types = { 'markdown' },
           heading = {
-              sign = false,
-              icons = { ' ', ' ', ' ', ' ', ' ', ' ' },
-              signs = { ' ' },
+--              sign = false,
+--              icons = { ' ', ' ', ' ', ' ', ' ', ' ' },
+--              signs = { ' ' },
           },
           code = {
-              sign = false,
+ --             sign = false,
           },
           link = {
-              enabled = false,
-              hyperlink = ' ',
+  --            enabled = false,
+  --            hyperlink = ' ',
           },
       })
     end,

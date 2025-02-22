@@ -5,7 +5,7 @@ Neovim 配置文件（for Mac OS and Linux）
 ## 需要安装的软件
 
 * luajit
-* install luarocks
+* luarocks
 * [stylua](https://github.com/JohnnyMorganz/StyLua)
 * ripgrep
 * fd
