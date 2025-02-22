@@ -12,9 +12,9 @@ return {
         numbers = "ordinal", -- | "ordinal" | "buffer_id" | "both" | function({ ordinal, id, lower, raise }): string,
         indicator = {
           icon = "▎", -- this should be omitted if indicator style is not 'icon'
-          style = "icon", -- 'icon' | 'underline' | 'none',
+          style = "none", -- 'icon' | 'underline' | 'none',
         },
-        buffer_close_icon = "",
+        buffer_close_icon = "",
         modified_icon = "●",
         close_icon = "",
         left_trunc_marker = "",
