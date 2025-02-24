@@ -47,7 +47,24 @@ return {
           require("lspconfig")[server_name].setup({})
         end,
         -- Next, you can provide a dedicated handler for specific servers.
-        -- For example, a handler override for the `rust_analyzer`:
+
+        -- a handler override for the `rust_analyzer`:
+        ["rust_analyzer"] = function()
+          local lspconfig = require("lspconfig")
+          lspconfig.rust_analyzer.setup({
+            flags = { debounce_text_changes = 150 },
+            settings = {
+              ["rust-analyzer"] = {
+                checkOnSave = {
+                  command = "clippy",
+                },
+              },
+            },
+
+            on_attach = on_attach,
+          })
+        end,
+
         ["lua_ls"] = function()
           local lspconfig = require("lspconfig")
           lspconfig.lua_ls.setup({
@@ -67,6 +84,7 @@ return {
   {
     "sbdchd/neoformat",
     cmd = "Neoformat",
+    event = "VeryLazy",
     config = function()
       -- 1.自动对齐
       vim.g.neoformat_basic_format_align = 1
@@ -79,6 +97,13 @@ return {
       vim.g.neoformat_only_msg_on_error = 1
 
       vim.g.neoformat_enabled_lua = { "stylua" }
+      vim.g.neoformat_enabled_rust = { "rustfmt" }
+      vim.keymap.set(
+        "n",
+        "<leader>cf",
+        "<cmd>Neoformat<CR>",
+        { noremap = true, silent = true, desc = "Format current file with Neoformat" }
+      )
     end,
   },
 }
