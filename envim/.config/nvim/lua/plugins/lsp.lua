@@ -96,8 +96,18 @@ return {
       -- 只提示错误消息
       vim.g.neoformat_only_msg_on_error = 1
 
+      cpp = {
+        {
+          exe = "clang-format",
+          args = {
+            "--style=file",
+          },
+          stdin = true,
+        },
+      }
       vim.g.neoformat_enabled_lua = { "stylua" }
       vim.g.neoformat_enabled_rust = { "rustfmt" }
+
       vim.keymap.set(
         "n",
         "<leader>cf",
