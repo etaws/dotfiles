@@ -78,6 +78,17 @@ return {
             on_attach = on_attach,
           })
         end,
+
+        ["clangd"] = function()
+          local lspconfig = require("lspconfig")
+          lspconfig.clangd.setup({
+            -- 可以根据需要添加更多 clangd 特定的配置选项
+            cmd = {
+              "clangd",
+              "--offset-encoding=utf-16", -- 解决一些编码问题
+            },
+          })
+        end,
       })
     end,
   },
@@ -96,7 +107,7 @@ return {
       -- 只提示错误消息
       vim.g.neoformat_only_msg_on_error = 1
 
-      cpp = {
+      vim.g.cpp = {
         {
           exe = "clang-format",
           args = {
