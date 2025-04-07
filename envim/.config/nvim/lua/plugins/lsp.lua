@@ -1,111 +1,68 @@
 return {
   {
     "williamboman/mason.nvim",
-    config = function()
-      require("mason").setup({
-        github = {
-          ---@since 1.0.0
-          -- The template URL to use when downloading assets from GitHub.
-          -- The placeholders are the following (in order):
-          -- 1. The repository (e.g. "rust-lang/rust-analyzer")
-          -- 2. The release version (e.g. "v0.3.0")
-          -- 3. The asset name (e.g. "rust-analyzer-v0.3.0-x86_64-unknown-linux-gnu.tar.gz")
-          -- download_url_template = "https://gitcode.com/gh_mirrors/ma/%s/releases/download/%s/%s",
-        },
-        ui = {
-          icons = {
-            package_installed = "✓",
-            package_pending = "➜",
-            package_uninstalled = "✗",
-          },
-        },
-      })
-    end,
-  },
-  {
-    "williamboman/mason-lspconfig.nvim",
-    dependencies = { "williamboman/mason.nvim" },
-    config = function()
-      require("mason-lspconfig").setup()
-    end,
-  },
-  {
-    "neovim/nvim-lspconfig",
-    event = "BufReadPre",
+    event = "VeryLazy",
     dependencies = {
-      "williamboman/mason.nvim",
-      event = { "VimEnter" },
+      "neovim/nvim-lspconfig",
       "williamboman/mason-lspconfig.nvim",
     },
-    config = function()
-      local on_attach = function(_, bufnr)
-        local opts = { noremap = true, silent = true }
-        local map = vim.api.nvim_buf_set_keymap
-        map(bufnr, "n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
-        map(bufnr, "n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
-        map(bufnr, "n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
-        map(bufnr, "n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
-        -- map(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-        map(bufnr, "n", "gr", "<cmd>Telescope lsp_references theme=dropdown<CR>", opts)
-        -- map(bufnr, "n", "gf", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
 
-        -- goto preview keymappigs
-        -- map(bufnr, "n", "gp", "<cmd>lua require('goto-preview').goto_preview_definition()<CR>", opts)
-        -- map(bufnr, "n", "gpi", "<cmd>lua require('goto-preview').goto_preview_implementation()<CR>",opts)
-        -- map(bufnr, "n", "gP", "<cmd>lua require('goto-preview').close_all_win()<CR>", opts)
-        -- map(bufnr, "n", "gf", "<cmd>lua require('goto-preview').goto_preview_references()<CR>", opts)
+    opts = {},
+
+    config = function(_, opts)
+      require("mason").setup(opts)
+
+      local registry = require("mason-registry")
+
+      local function setup_lsp(name, config)
+        local s, p = pcall(registry.get_package, name)
+        if s and not p:is_installed() then
+          p:install()
+        end
+        local nvim_lsp = require("mason-lspconfig.mappings.server").package_to_lspconfig[name]
+        require("lspconfig")[nvim_lsp].setup(config)
       end
 
-      require("mason-lspconfig").setup_handlers({
-        -- The first entry (without a key) will be the default handler
-        -- and will be called for each installed server that doesn't have
-        -- a dedicated handler.
-        function(server_name) -- default handler (optional)
-          require("lspconfig")[server_name].setup({})
-        end,
-        -- Next, you can provide a dedicated handler for specific servers.
+      local on_attach = function(_, bufnr)
+        local os = { buffer = bufnr, silent = true }
+        vim.keymap.set("n", "gd", vim.lsp.buf.definition, os)
+        -- vim.keymap.set("n", "gr", vim.lsp.buf.references, os)
+        vim.keymap.set("n", "gr", "<cmd>Telescope lsp_references theme=dropdown<CR>", os)
+        vim.keymap.set("n", "K", vim.lsp.buf.hover, os)
 
-        -- a handler override for the `rust_analyzer`:
-        ["rust_analyzer"] = function()
-          local lspconfig = require("lspconfig")
-          lspconfig.rust_analyzer.setup({
-            flags = { debounce_text_changes = 150 },
-            settings = {
-              ["rust-analyzer"] = {
-                checkOnSave = {
-                  command = "clippy",
-                },
-              },
+        vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, os)
+        vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, os)
+      end
+
+      setup_lsp("lua-language-server", {
+        settings = {
+          Lua = {
+            diagnostics = {
+              globals = { "vim" },
             },
+          },
+        },
+        on_attach = on_attach,
+      })
 
-            on_attach = on_attach,
-          })
-        end,
-
-        ["lua_ls"] = function()
-          local lspconfig = require("lspconfig")
-          lspconfig.lua_ls.setup({
-            settings = {
-              Lua = {
-                diagnostics = {
-                  globals = { "vim" },
-                },
-              },
+      setup_lsp("rust-analyzer", {
+        flags = { debounce_text_changes = 150 },
+        settings = {
+          ["rust-analyzer"] = {
+            checkOnSave = {
+              command = "clippy",
             },
-            on_attach = on_attach,
-          })
-        end,
+          },
+        },
+        on_attach = on_attach,
+      })
 
-        ["clangd"] = function()
-          local lspconfig = require("lspconfig")
-          lspconfig.clangd.setup({
-            -- 可以根据需要添加更多 clangd 特定的配置选项
-            cmd = {
-              "clangd",
-              "--offset-encoding=utf-16", -- 解决一些编码问题
-            },
-          })
-        end,
+      vim.cmd("LspStart")
+
+      vim.diagnostic.config({
+        virtual_text = true,
+        virtual_lines = true,
+        update_in_insert = true,
       })
     end,
   },
