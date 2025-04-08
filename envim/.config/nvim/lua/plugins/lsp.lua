@@ -2,68 +2,113 @@ return {
   {
     "williamboman/mason.nvim",
     event = "VeryLazy",
+    config = function()
+      require("mason").setup({
+        ui = {
+          icons = {
+            package_installed = "✓",
+            package_pending = "➜",
+            package_uninstalled = "✗",
+          },
+        },
+      })
+    end,
+    vim.diagnostic.config({
+      virtual_text = true,
+      virtual_lines = true,
+      update_in_insert = true,
+    }),
+  },
+  {
+    "williamboman/mason-lspconfig.nvim",
+    dependencies = { "williamboman/mason.nvim" },
+    config = function()
+      require("mason-lspconfig").setup({
+        ensure_installed = { "rust_analyzer", "lua_ls", "clangd" },
+        automatic_installation = false,
+      })
+    end,
+  },
+  {
+    "neovim/nvim-lspconfig",
+    event = "BufReadPre",
     dependencies = {
-      "neovim/nvim-lspconfig",
+      "williamboman/mason.nvim",
+      event = { "VimEnter" },
       "williamboman/mason-lspconfig.nvim",
     },
 
-    opts = {},
-
-    config = function(_, opts)
-      require("mason").setup(opts)
-
-      local registry = require("mason-registry")
-
-      local function setup_lsp(name, config)
-        local s, p = pcall(registry.get_package, name)
-        if s and not p:is_installed() then
-          p:install()
-        end
-        local nvim_lsp = require("mason-lspconfig.mappings.server").package_to_lspconfig[name]
-        require("lspconfig")[nvim_lsp].setup(config)
+    config = function()
+      local function setup_lsp_keybindings()
+        local opts = { noremap = true, silent = true }
+        vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
+        vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+        vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+        vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
+        vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
+        vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, opts)
+        vim.keymap.set("n", "<space>ca", vim.lsp.buf.code_action, opts)
+        vim.keymap.set("n", "gr", "<cmd>Telescope lsp_references theme=dropdown<CR>", opts)
+        -- vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
       end
 
-      local on_attach = function(_, bufnr)
-        local os = { buffer = bufnr, silent = true }
-        vim.keymap.set("n", "gd", vim.lsp.buf.definition, os)
-        -- vim.keymap.set("n", "gr", vim.lsp.buf.references, os)
-        vim.keymap.set("n", "gr", "<cmd>Telescope lsp_references theme=dropdown<CR>", os)
-        vim.keymap.set("n", "K", vim.lsp.buf.hover, os)
-
-        vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, os)
-        vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, os)
-      end
-
-      setup_lsp("lua-language-server", {
-        settings = {
-          Lua = {
-            diagnostics = {
-              globals = { "vim" },
+      local handlers = {
+        function(server_name)
+          require("lspconfig")[server_name].setup({})
+        end,
+        -- Rust
+        ["rust_analyzer"] = function()
+          require("lspconfig").rust_analyzer.setup({
+            settings = {
+              ["rust-analyzer"] = {
+                imports = {
+                  granularity = {
+                    group = "module",
+                  },
+                  prefix = "self",
+                },
+                checkOnSave = {
+                  command = "clippy",
+                },
+              },
             },
-          },
-        },
-        on_attach = on_attach,
-      })
-
-      setup_lsp("rust-analyzer", {
-        flags = { debounce_text_changes = 150 },
-        settings = {
-          ["rust-analyzer"] = {
-            checkOnSave = {
-              command = "clippy",
+          })
+          setup_lsp_keybindings()
+        end,
+        -- Lua
+        ["lua_ls"] = function()
+          require("lspconfig").lua_ls.setup({
+            settings = {
+              Lua = {
+                diagnostics = {
+                  globals = { "vim" },
+                },
+                workspace = {
+                  library = {
+                    [vim.fn.expand("$VIMRUNTIME/lua")] = true,
+                    [vim.fn.stdpath("config") .. "/lua"] = true,
+                  },
+                },
+              },
             },
-          },
-        },
-        on_attach = on_attach,
-      })
-
-      vim.cmd("LspStart")
-
-      vim.diagnostic.config({
-        virtual_text = true,
-        virtual_lines = true,
-        update_in_insert = true,
-      })
+          })
+          setup_lsp_keybindings()
+        end,
+        -- C++
+        ["clangd"] = function()
+          require("lspconfig").clangd.setup({
+            cmd = {
+              "clangd",
+              "--background-index",
+              "--suggest-missing-includes",
+              "--clang-tidy",
+              "--header-insertion=iwyu",
+            },
+          })
+          setup_lsp_keybindings()
+        end,
+      }
+      require("mason-lspconfig").setup_handlers(handlers)
     end,
   },
   {
