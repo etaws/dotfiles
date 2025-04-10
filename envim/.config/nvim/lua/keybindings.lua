@@ -12,6 +12,7 @@ local opt = {
 
 local pluginKeys = {}
 
+map("n", "<leader>K", "<cmd>:bd<cr>", opt)
 map("n", "<C-l>", ":ls<CR>:b<Space>", opt)
 map("n", "<C-k>", ":bd<CR>", opt)
 map("n", "<F8>", ":ccl<CR>", opt)

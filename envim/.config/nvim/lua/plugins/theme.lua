@@ -13,6 +13,7 @@ return {
   },
   {
     "glepnir/zephyr-nvim",
+    event = "VeryLazy",
     lazy = false,
     priority = 1000,
     config = function()
@@ -21,12 +22,12 @@ return {
     end,
   },
   { "ellisonleao/gruvbox.nvim", event = "VeryLazy" },
-  { "catppuccin/nvim", name = "catppuccin" },
+  { "catppuccin/nvim", name = "catppuccin", event = "VeryLazy" },
   { "folke/tokyonight.nvim", event = "VeryLazy" },
   { "sainnhe/edge", event = "VeryLazy" },
   { "Mofiqul/vscode.nvim", event = "VeryLazy" },
   { "tjdevries/colorbuddy.vim", event = "VeryLazy" },
   { "Th3Whit3Wolf/onebuddy", event = "VeryLazy" },
   { "mhartington/oceanic-next", event = "VeryLazy" },
-  { "hardhackerlabs/theme-vim", enabled = true , event = "VeryLazy" },
+  { "hardhackerlabs/theme-vim", enabled = true, event = "VeryLazy" },
 }

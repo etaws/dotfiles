@@ -1,6 +1,7 @@
 return {
   {
     "stevearc/aerial.nvim",
+    event = "VeryLazy",
     opts = {},
     -- Optional dependencies
     dependencies = {

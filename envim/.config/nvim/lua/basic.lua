@@ -48,11 +48,11 @@ vim.o.writebackup = false
 vim.o.swapfile = false
 
 -- smaller updatetime
-vim.o.updatetime = 250
+vim.o.updatetime = 100
 vim.wo.signcolumn = "yes"
--- 设置 timeoutlen 为等待键盘快捷键连击时间500毫秒，可根据需要设置
+-- 设置 timeoutlen 为等待键盘快捷键连击时间 100 毫秒，可根据需要设置
 -- 遇到问题详见：https://github.com/nshen/learn-neovim-lua/issues/1
-vim.o.timeoutlen = 500
+vim.o.timeoutlen = 100
 
 -- 样式
 vim.o.background = "dark"
